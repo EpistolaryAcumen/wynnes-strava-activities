@@ -1,12 +1,13 @@
 {% extends "layout.html" %}
+{% block nav_home %}active{% endblock %}
 
 {% block content %}
-<div class="card">
+<div class="content-section py-4 px-4 mb-4">
     <h1>Data Science App</h1>
-    <p>A full-stack data science project.</p>
+    <p class="lead mb-0">A full-stack data science project.</p>
 </div>
-<a href="/wynne-activities" class="card card-link">
+<a href="{{ url_for('wynne_activities') }}" class="content-section card-link py-4 px-4 mb-4 d-block">
     <h2>Wynne's Activities</h2>
-    <p>View mile pace over time from Strava</p>
+    <p class="mb-0">View mile pace over time from Strava</p>
 </a>
 {% endblock %}
