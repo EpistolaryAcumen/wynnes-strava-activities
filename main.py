@@ -11,7 +11,7 @@ from strava_wynne_activities import get_athlete
 
 load_dotenv()
 
-app = FastAPI(title='Data Science App')
+app = FastAPI(title="Wynne's Strava Data")
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
