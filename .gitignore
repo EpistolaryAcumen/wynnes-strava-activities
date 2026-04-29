@@ -1,2 +1,7 @@
 .env
 __pycache__/
+duckdb.ipynb
+Wynne-Exercise.ipynb
+notebook.ipynb
+*.db
+*.db.wal
