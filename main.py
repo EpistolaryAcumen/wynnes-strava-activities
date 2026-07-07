@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from typing import Optional
+from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware
 
 from charts import pace_over_time_chart
 from top_five import top_five_paces
@@ -11,6 +12,8 @@ from top_five import top_five_paces
 load_dotenv()
 
 app = FastAPI(title="Wynne's Strava Data")
+
+app.add_middleware(ProxyHeadersMiddleware, trusted_hosts=["*"])
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
