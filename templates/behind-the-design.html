@@ -4,64 +4,38 @@
 {% block content %}
 <div class="content-section py-4 px-4 mb-4">
     <h1>Behind the Design</h1>
-    <p class="lead mb-0">A short tour of how this app is built and the reasoning behind each choice.</p>
+    <p class="lead mb-0">The app is indeed simple, but each brick in this house is the foundation of a data life-cycle.</p>
 </div>
 
 <div class="content-section py-4 px-4 mb-4">
-    <h2 class="h4">The stack</h2>
-    <p>This is a <strong>FastAPI</strong> app serving Jinja templates, backed by a <strong>PostgreSQL</strong>
-        database, with charts rendered in <strong>Plotly</strong>. It's deployed on <strong>Railway</strong> and
-        refreshes its data once a day.</p>
-    <p class="mb-0">I chose FastAPI because my background is in Python and data work. It lets me stand up a clean
-        web layer with very little ceremony, so I can spend my time where my strengths and interests are — the
-        backend and the data — rather than on heavy frontend tooling. The templating layer handles the
-        presentation, which frees me to focus on the pipeline that feeds it.</p>
+    <h2 class="h4">The Stack</h2>
+    <p>This is a <strong>FastAPI</strong> app serving Jinja templates, backed by a <strong>Postgres</strong>
+        database. The charts are rendered in <strong>Plotly</strong> and the thing is deployed on <strong>Railway</strong>,
+        refreshed once a day.</p>
+    <p class="mb-0">I chose FastAPI because it keeps me in my comfort-zone, Python, SQL and data. The templating layer handles 
+        the presentation which frees me up to focus on the pipeline that feeds it.</p>
 </div>
 
 <div class="content-section py-4 px-4 mb-4">
-    <h2 class="h4">Why Postgres</h2>
-    <p>The data here is tiny — one runner's activities, a few hundred rows growing by roughly one per day. At that
-        scale the classic "analytical vs. transactional database" debate barely applies; any engine returns queries
-        instantly. So the deciding factors weren't raw analytical horsepower — they were fit for a deployed app:</p>
-    <ul>
-        <li><strong>It's a client-server database, which is what a 24/7 app needs.</strong> The web app and the
-            daily sync job are two separate processes that both touch the same data — one reading, one writing.
-            Postgres handles that concurrent access natively.</li>
-        <li><strong>It decouples storage from the app.</strong> On a cloud host the container's filesystem is
-            ephemeral and gets wiped on every deploy. A managed Postgres lives independently, so the data survives
-            deploys and the app stays stateless.</li>
-        <li><strong>It's right-sized.</strong> Reaching for a large analytical warehouse to serve a few hundred
-            rows would be over-engineering. Matching the tool to the actual workload is the point.</li>
-    </ul>
-    <p class="mb-0">I started with <strong>DuckDB</strong>, which I love for local, exploratory analysis — it's
-        excellent for blending SQL and Python in a notebook. But it's an embedded, single-writer, file-based engine:
-        great in a notebook, awkward as a shared serving layer behind a live app. So I kept DuckDB for exploration
-        and moved the serving database to Postgres.</p>
-</div>
-
-<div class="content-section py-4 px-4 mb-4">
-    <h2 class="h4">The pipeline</h2>
+    <h2 class="h4">The Pipeline</h2>
     <p>The ETL is deliberately simple: a daily incremental insert, scheduled with cron.</p>
     <p>Each morning the job authenticates with the Strava API, requests only activities newer than the most recent
-        one already stored (a watermark), and inserts them. The insert is <strong>idempotent</strong> — it uses
+        one already stored, and inserts them. The insert is <strong>idempotent</strong> — it uses
         <code>ON CONFLICT DO NOTHING</code> on the activity ID as a primary key — so re-runs or overlapping windows
-        can never create duplicates. Raw API data lands in a staging table, then a single transformation query
-        curates it into the typed, unit-converted table the app reads (a small bronze &rarr; silver pattern).</p>
-    <p class="mb-0">Importantly, the web app reads <strong>only from the database, never live from Strava</strong>.
-        Page loads are fast and never depend on the API being up or on rate limits — the cron job is the only thing
+        can never create duplicates.</p>
+    <p class="mb-0">The web app reads <strong>only from the database, never live from Strava</strong>.
+        Page loads are fast and never depend on the API being up or on rate limits. The cron job is the only thing
         that talks to Strava.</p>
 </div>
 
 <div class="content-section py-4 px-4 mb-4">
-    <h2 class="h4">What I'd change at scale</h2>
-    <p>The design is scoped to what this project actually is: one athlete, small data, one machine. If it were built
-        for many Strava users, the choices would shift:</p>
+    <h2 class="h4">What I'd do at scale</h2>
+    <p>If it was built for many users, my design choices would shift accordingly:</p>
     <ul class="mb-0">
-        <li><strong>Data warehouse:</strong> I'd move analytics to <strong>BigQuery</strong> (or a similar columnar
-            warehouse), which is built for scanning large volumes across many users.</li>
-        <li><strong>Orchestration:</strong> a daily cron script is perfect for a single, simple job. For more
-            complex, multi-step, dependency-aware pipelines I'd reach for <strong>Airflow</strong> — real
-            scheduling, retries, backfills, and monitoring.</li>
+        <li><strong>Data warehouse:</strong> I'd use <strong>BigQuery</strong>. Its columnar and built for 
+            scanning large volumes across many users.</li>
+        <li><strong>Orchestration:</strong> For more complex, dependency-aware pipelines I'd use <strong>Airflow</strong> — real scheduling, 
+            retries, backfills, and monitoring.</li>
     </ul>
 </div>
 {% endblock %}
