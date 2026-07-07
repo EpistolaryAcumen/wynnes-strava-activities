@@ -7,7 +7,7 @@ from sqlalchemy import create_engine, text
 
 load_dotenv()
 
-_url = os.environ["DATABASE_URL"].replace("postgresql://", "postgresql+psycopg://", 1)
+_url = os.environ["DATABASE_URL"].replace("postgres://", "postgresql+psycopg://", 1)
 engine = create_engine(_url)
 
 
