@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     {% if title %}
-      <title>Wynne Strava App - {{ title }}</title>
+      <title>Wynne's Strava Activities - {{ title }}</title>
     {% else %}
-      <title>Wynne Strava App</title>
+      <title>Wynne's Strava Activities</title>
     {% endif %}
 
     <meta name="description" content="A full-stack data science project by Wynne Philpott">
@@ -38,7 +38,7 @@
            data-bs-theme="dark">
         <div class="container">
           <a class="navbar-brand me-4" href="{{ url_for('home') }}">
-            Wynne Strava App
+            Wynne's Strava Activities
           </a>
           <button class="navbar-toggler"
                   type="button"
@@ -52,7 +52,7 @@
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav me-auto">
               <a class="nav-link {% block nav_home %}{% endblock %}" href="{{ url_for('home') }}">Home</a>
-              <a class="nav-link {% block nav_activities %}{% endblock %}" href="{{ url_for('wynne_activities') }}">Activities</a>
+              <a class="nav-link {% block nav_design %}{% endblock %}" href="{{ url_for('behind_the_design') }}">Behind the Design</a>
             </div>
             <div class="nav-item dropdown">
               <a class="nav-link dropdown-toggle"
