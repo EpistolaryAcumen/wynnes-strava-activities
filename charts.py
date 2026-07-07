@@ -7,19 +7,9 @@ from sqlalchemy import create_engine, text
 
 load_dotenv()
 
-_engine = None
-
-
-def get_engine():
-    global _engine
-    if _engine is None:
-        raw = os.environ["DATABASE_URL"]
-        if raw.startswith("postgresql://"):
-            url = raw.replace("postgresql://", "postgresql+psycopg://", 1)
-        else:
-            url = raw.replace("postgres://", "postgresql+psycopg://", 1)
-        _engine = create_engine(url)
-    return _engine
+_raw = os.environ["DATABASE_URL"]
+_url = _raw.replace("postgresql://", "postgresql+psycopg://", 1) if _raw.startswith("postgresql://") else _raw.replace("postgres://", "postgresql+psycopg://", 1)
+engine = create_engine(_url)
 
 
 def pace_over_time_chart(since="2026-01-01"):
@@ -31,7 +21,7 @@ def pace_over_time_chart(since="2026-01-01"):
             "WHERE start_ts >= :since AND distance_mi > 3.09 "
             "ORDER BY start_ts"
         ),
-        get_engine(),
+        engine,
         params={"since": since},
     )
 
