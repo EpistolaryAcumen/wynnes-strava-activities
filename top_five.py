@@ -1,7 +1,7 @@
 import pandas as pd
 from sqlalchemy import text
 
-from charts import engine
+from charts import get_engine
 
 
 def top_five_paces(since="2026-01-01"):
@@ -15,7 +15,7 @@ def top_five_paces(since="2026-01-01"):
             "ORDER BY pace_min_per_mile ASC "
             "LIMIT 5"
         ),
-        engine,
+        get_engine(),
         params={"since": since},
     )
 
