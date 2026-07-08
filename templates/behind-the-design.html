@@ -11,7 +11,7 @@
     <h2 class="h4">The Stack</h2>
     <p>This is a <strong>FastAPI</strong> app serving Jinja templates, backed by a <strong>Postgres</strong>
         database. The charts are rendered in <strong>Plotly</strong> and the thing is deployed on <strong>Railway</strong>,
-        refreshed once a day.</p>
+        refreshed hourly.</p>
     <p class="mb-0">I chose FastAPI because it keeps me in my comfort-zone, Python, SQL and data. The templating layer handles 
         the presentation which frees me up to focus on the pipeline that feeds it.</p>
 </div>
@@ -19,9 +19,9 @@
 <div class="content-section py-4 px-4 mb-4">
     <h2 class="h4">The Pipeline</h2>
     <p>The ETL is deliberately simple: a daily incremental insert, scheduled with cron.</p>
-    <p>Each morning the job authenticates with the Strava API, requests only activities newer than the most recent
-        one already stored, and inserts them. The insert is <strong>idempotent</strong> — it uses
-        <code>ON CONFLICT DO NOTHING</code> on the activity ID as a primary key — so re-runs or overlapping windows
+    <p>Each morning the job authenticates with the <strong>Strava API</strong>, requests only activities newer than the most recent
+        one already stored, and inserts them. The insert is <strong>idempotent</strong>. It uses
+        <code>ON CONFLICT DO NOTHING</code> on the activity ID as a primary key ensuring that re-runs or overlapping windows
         can never create duplicates.</p>
     <p class="mb-0">The web app reads <strong>only from the database, never live from Strava</strong>.
         Page loads are fast and never depend on the API being up or on rate limits. The cron job is the only thing
@@ -34,7 +34,7 @@
     <ul class="mb-0">
         <li><strong>Data warehouse:</strong> I'd use <strong>BigQuery</strong>. Its columnar and built for 
             scanning large volumes across many users.</li>
-        <li><strong>Orchestration:</strong> For more complex, dependency-aware pipelines I'd use <strong>Airflow</strong> — real scheduling, 
+        <li><strong>Orchestration:</strong> For more complex, dependency-aware pipelines I'd use <strong>Airflow</strong> as it is great for scheduling, 
             retries, backfills, and monitoring.</li>
     </ul>
 </div>
