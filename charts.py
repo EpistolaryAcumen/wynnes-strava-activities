@@ -37,5 +37,33 @@ def pace_over_time_chart(since="2026-01-01"):
     )
     fig.update_yaxes(autorange="reversed", tickformat="%M:%S")   # faster on top
     fig.update_traces(hovertemplate="%{x|%b %d, %Y}<br>%{y|%M:%S}/mi<extra></extra>")
-    fig.update_layout(template="plotly_white", height=500, margin=dict(t=10))
+    fig.update_layout(template="plotly_white", height=350, margin=dict(t=10))
+    return fig
+
+
+def cumulative_distance_chart(since="2026-01-01"):
+    df = pd.read_sql(
+        text(
+            "SELECT start_ts, distance_mi "
+            "FROM wynne_activities "
+            "WHERE start_ts >= :since "
+            "ORDER BY start_ts"
+        ),
+        engine,
+        params={"since": since},
+    )
+
+    df["cumulative_mi"] = df["distance_mi"].cumsum()
+
+    fig = px.area(
+        df,
+        x="start_ts",
+        y="cumulative_mi",
+        markers=True,
+        labels={"start_ts": "Date", "cumulative_mi": "Total Miles"},
+    )
+    fig.update_traces(
+        hovertemplate="%{x|%b %d, %Y}<br>%{y:.1f} mi<extra></extra>"
+    )
+    fig.update_layout(template="plotly_white", height=350, margin=dict(t=10))
     return fig

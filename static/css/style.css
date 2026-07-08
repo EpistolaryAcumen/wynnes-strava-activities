@@ -35,6 +35,10 @@
 }
 
 /* Base Styles */
+html {
+  font-size: 90%;
+}
+
 body {
   font-family: var(--font-body);
 }

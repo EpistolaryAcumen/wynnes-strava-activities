@@ -21,15 +21,21 @@
 </div>
 <div class="row g-4 mb-4">
     <div class="col-lg-9">
-        <div class="content-section py-4 px-4 h-100">
+        <div class="content-section py-4 px-4 mb-4">
             <h2>Mile Pace Over Time</h2>
             <div class="chart-container">
                 {{ chart | safe }}
             </div>
         </div>
+        <div class="content-section py-4 px-4">
+            <h2>Cumulative Distance</h2>
+            <div class="chart-container">
+                {{ cumulative_chart | safe }}
+            </div>
+        </div>
     </div>
     <div class="col-lg-3">
-        <div class="content-section py-4 px-4 h-100">
+        <div class="content-section py-4 px-4 mb-4">
             <h2 class="h5">Top 5 Fastest</h2>
             <ol class="list-group list-group-numbered list-group-flush">
                 {% for run in top_five %}
@@ -41,6 +47,21 @@
                 </li>
                 {% endfor %}
             </ol>
+        </div>
+        <div class="content-section py-4 px-4 mb-4 text-center">
+            <h2 class="h5">Half Marathons</h2>
+            <p class="display-6 fw-bold mb-0">{{ half_marathons }}</p>
+            <small class="text-body-secondary">in 2026</small>
+        </div>
+        <div class="content-section py-4 px-4 mb-4 text-center">
+            <h2 class="h5">5K+ Runs</h2>
+            <p class="display-6 fw-bold mb-0">{{ five_ks }}</p>
+            <small class="text-body-secondary">in 2026</small>
+        </div>
+        <div class="content-section py-4 px-4 text-center">
+            <h2 class="h5">Total Distance</h2>
+            <p class="display-6 fw-bold mb-0">{{ total_miles }}</p>
+            <small class="text-body-secondary">miles in 2026</small>
         </div>
     </div>
 </div>
