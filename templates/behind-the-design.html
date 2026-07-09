@@ -18,7 +18,7 @@
 
 <div class="content-section py-4 px-4 mb-4">
     <h2 class="h4">The Pipeline</h2>
-    <p>The ETL is deliberately simple: a daily incremental insert, scheduled with cron.</p>
+    <p>The ETL is deliberately simple: an hourly incremental insert, scheduled with cron.</p>
     <p>Each morning the job authenticates with the <strong>Strava API</strong>, requests only activities newer than the most recent
         one already stored, and inserts them. The insert is <strong>idempotent</strong>. It uses
         <code>ON CONFLICT DO NOTHING</code> on the activity ID as a primary key ensuring that re-runs or overlapping windows
